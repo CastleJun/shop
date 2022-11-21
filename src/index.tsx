@@ -11,6 +11,7 @@ import NewProduct from './pages/new-product';
 import NotFound from './pages/not-found';
 import ProductDetail from './pages/product-detail';
 import Products from './pages/products';
+import ProtectedRoute from './pages/protected-route';
 
 const router = createBrowserRouter([
   {
@@ -21,8 +22,22 @@ const router = createBrowserRouter([
       { index: true, path: '/', element: <Home /> },
       { path: '/products', element: <Products /> },
       { path: '/products/id', element: <ProductDetail /> },
-      { path: '/products/new', element: <NewProduct /> },
-      { path: '/cart', element: <Cart /> },
+      {
+        path: '/products/new',
+        element: (
+          <ProtectedRoute requireAdmin>
+            <NewProduct />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/carts',
+        element: (
+          <ProtectedRoute>
+            <Cart />
+          </ProtectedRoute>
+        ),
+      },
     ],
   },
 ]);
