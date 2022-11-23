@@ -2,7 +2,7 @@ import React from 'react';
 
 interface Props {
   text: string;
-  onClick?: () => void;
+  onClick?: React.MouseEventHandler<HTMLElement>;
   type?: React.ButtonHTMLAttributes<HTMLButtonElement>['type'];
   disabled?: boolean;
 }
