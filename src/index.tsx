@@ -5,12 +5,12 @@ import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import App from './App';
+import AllProduct from './pages/all-product';
 import Cart from './pages/cart';
 import Home from './pages/home';
 import NewProduct from './pages/new-product';
 import NotFound from './pages/not-found';
 import ProductDetail from './pages/product-detail';
-import Products from './pages/products';
 import ProtectedRoute from './pages/protected-route';
 
 const router = createBrowserRouter([
@@ -20,8 +20,8 @@ const router = createBrowserRouter([
     errorElement: <NotFound />,
     children: [
       { index: true, path: '/', element: <Home /> },
-      { path: '/products', element: <Products /> },
-      { path: '/products/id', element: <ProductDetail /> },
+      { path: '/products', element: <AllProduct /> },
+      { path: '/products/:id', element: <ProductDetail /> },
       {
         path: '/products/new',
         element: (
