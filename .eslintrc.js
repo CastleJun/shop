@@ -66,7 +66,12 @@ module.exports = {
     'react/prop-types': 'off',
     'react/react-in-jsx-scope': 'off',
     'react/require-default-props': 'off',
-
+    'jsx-a11y/label-has-associated-control': [
+      2,
+      {
+        labelAttributes: ['htmlFor'],
+      },
+    ],
     // Import
     'import/extensions': [
       'error',
