@@ -3,6 +3,16 @@ import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signO
 import { get, getDatabase, ref, set } from 'firebase/database';
 import { v4 as uuid } from 'uuid';
 
+export interface Products {
+  id: string;
+  image: string;
+  title: string;
+  category: string;
+  price: number;
+  description: string;
+  options: string[];
+}
+
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -69,4 +79,14 @@ export const addNewProduct = async (product: any, image: any) => {
     image,
     options: product.options.split(','),
   });
+};
+
+export const getProducts: () => Promise<Products[]> = async () => {
+  const snapshot = await get(ref(database, 'products'));
+
+  if (snapshot.exists()) {
+    return Object.values(snapshot.val());
+  }
+
+  return [];
 };
