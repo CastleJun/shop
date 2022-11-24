@@ -1,10 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { Products } from '../api/firebase';
+import { Product } from '../api/firebase';
 
 interface Props {
-  product: Products;
+  product: Product;
 }
 
 const ProductCard: React.FC<Props> = (props) => {
