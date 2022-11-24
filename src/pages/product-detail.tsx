@@ -1,22 +1,34 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { Products } from '../api/firebase';
+import { Product } from '../api/firebase';
 import Button from '../components/base-component/button';
+import { useCart } from '../hooks/useCart';
 
 interface Props {}
 
-const ProductDetail: React.FC<Props> = (props) => {
-  const { state }: { state: { product: Products } } = useLocation();
+const ProductDetail: React.FC<Props> = () => {
+  const { state }: { state: { product: Product } } = useLocation();
   const { id, price, image, title, category, description, options } = state.product;
+  const [success, setSuccess] = useState<string | null>(null);
   const [selected, setSelected] = useState(options && options[0]);
 
+  const { addOrUpdateItem } = useCart();
   const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelected(event.target.value);
   };
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    // console.log(event.currentTarget);
+  const handleClick = () => {
+    const product = { id, image, title, price, option: selected, quantity: 1 };
+
+    addOrUpdateItem.mutate(product, {
+      onSuccess: () => {
+        setSuccess('장바구니에 추가되었습니다.');
+        setTimeout(() => {
+          setSuccess(null);
+        }, 3000);
+      },
+    });
   };
 
   return (
@@ -45,6 +57,7 @@ const ProductDetail: React.FC<Props> = (props) => {
                 })}
             </select>
           </div>
+          {success && <p className="my-2">⭐️{success}</p>}
           <Button text="장바구니 추가" onClick={handleClick} />
         </div>
       </section>

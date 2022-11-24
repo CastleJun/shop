@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 
-import { addNewProduct } from '../api/firebase';
 import { uploadImage } from '../api/uploader';
 import Button from '../components/base-component/button';
+import { useProducts } from '../hooks/useProducts';
 
 interface Props {}
 
-interface Product {
+export interface INewProduct {
   title?: string;
   price?: number;
   category?: string;
@@ -15,10 +15,12 @@ interface Product {
 }
 
 const NewProduct: React.FC<Props> = () => {
-  const [product, setProduct] = useState<Product>({});
+  const [product, setProduct] = useState<INewProduct>({});
   const [file, setFile] = useState<unknown>(undefined);
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [success, setSuccess] = useState<string | null>(null);
+
+  const { addProduct } = useProducts();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, files } = event.target as HTMLInputElement;
@@ -39,12 +41,18 @@ const NewProduct: React.FC<Props> = () => {
 
     try {
       const { url } = await uploadImage(file as Blob);
-      await addNewProduct(product, url);
-      await setSuccess('성공적으로 제품이 추가되었습니다.');
+      addProduct.mutate(
+        { product, url },
+        {
+          onSuccess: () => {
+            setSuccess('성공적으로 제품이 추가되었습니다.');
 
-      await setTimeout(() => {
-        setSuccess(null);
-      }, 4000);
+            setTimeout(() => {
+              setSuccess(null);
+            }, 4000);
+          },
+        }
+      );
     } catch (error) {
       console.error(error);
     } finally {

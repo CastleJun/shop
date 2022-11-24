@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 
-import { useAuthContext } from '../components/context/auth-context';
+import { useAuthContext } from '../context/auth-context';
 
 interface Props {
   requireAdmin?: boolean;
